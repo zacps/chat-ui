@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		embeddingModel = conversation.embeddingModel;
 	}
 
-	const model = models.find((m) => m.name === values.model);
+	const model = models.find((m) => (m.id || m.name) === values.model);
 
 	if (!model) {
 		throw error(400, "Invalid model");
