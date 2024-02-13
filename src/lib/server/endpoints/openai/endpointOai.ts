@@ -16,12 +16,13 @@ export const endpointOAIParametersSchema = z.object({
 		.union([z.literal("completions"), z.literal("chat_completions")])
 		.default("chat_completions"),
 	defaultHeaders: z.record(z.string()).optional(),
+	defaultQuery: z.record(z.string()).optional(),
 });
 
 export async function endpointOai(
 	input: z.input<typeof endpointOAIParametersSchema>
 ): Promise<Endpoint> {
-	const { baseURL, apiKey, completion, model, defaultHeaders } =
+	const { baseURL, apiKey, completion, model, defaultHeaders, defaultQuery } =
 		endpointOAIParametersSchema.parse(input);
 	let OpenAI;
 	try {
@@ -34,6 +35,7 @@ export async function endpointOai(
 		apiKey: apiKey ?? "sk-",
 		baseURL,
 		defaultHeaders,
+		defaultQuery,
 	});
 
 	if (completion === "completions") {
